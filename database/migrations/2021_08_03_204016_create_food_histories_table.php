@@ -14,7 +14,12 @@ class CreateFoodHistoriesTable extends Migration
     public function up()
     {
         Schema::create('food_histories', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('user_id');
+            $table->integer('amount');
+            $table->json('items');
+            $table->text('description');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

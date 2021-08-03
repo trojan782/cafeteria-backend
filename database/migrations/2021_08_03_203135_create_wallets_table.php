@@ -14,7 +14,14 @@ class CreateWalletsTable extends Migration
     public function up()
     {
         Schema::create('wallets', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->engine = 'MyISAM';
+            $table->uuid('id')->primary();
+            $table->string('user_id');
+            $table->string('virtual_account')->unique();
+            $table->boolean('visibility')->default(true);
+            $table->integer('balance')->default(0);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
