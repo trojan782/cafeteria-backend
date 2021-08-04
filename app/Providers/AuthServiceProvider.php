@@ -23,8 +23,8 @@ class AuthServiceProvider extends ServiceProvider
         'create-meal' => ['ADMIN'],
         'purchase-meal' => ['ADMIN', 'STUDENT'],
         'edit-meal' => ['ADMIN'],
-        'update-product' => ['ADMIN'],
-        'destroy-product' => ['ADMIN'],
+        'update-meal' => ['ADMIN'],
+        'destroy-meal' => ['ADMIN'],
     ];
 
     /**
