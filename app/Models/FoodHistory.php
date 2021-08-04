@@ -14,7 +14,8 @@ class FoodHistory extends Model
         'user_id',
         'amount',
         'items',
-        'description'
+        'active',
+        'barcode'
     ];
 
     protected $casts = [

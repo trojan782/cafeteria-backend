@@ -14,7 +14,8 @@ class AddActiveBarcodeField extends Migration
     public function up()
     {
         Schema::table('food_histories', function (Blueprint $table) {
-            //
+            $table->boolean('active')->default(true);
+            $table->longText('barcode')->unique();
         });
     }
 
