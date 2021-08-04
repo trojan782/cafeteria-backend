@@ -45,10 +45,11 @@ Route::group([
 
 //Wallet Routes
 Route::group([
-    'middleware' => ['jwt.verify', 'verified', 'pin'],
+    'middleware' => ['jwt.verify', 'verified'],
     'prefix' => 'wallet'
 ], function ($router) {
     Route::get('/', [WalletController::class, 'show']);
+    Route::put('/visible/{boolean}', [WalletController::class, 'visibility']);
     Route::post('/withdraw', [WalletController::class, 'withdraw']);
 });
 
