@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,14 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
+});
+
+//Verification routes
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'email'
+
+], function ($router) {
+    Route::get('/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
+    Route::get('/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 });

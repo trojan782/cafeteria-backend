@@ -73,7 +73,7 @@ class AuthController extends Controller
             $validator = Validator::make($request->all(), [
                 'username' => 'required|string|between:2,100',
                 'email' => 'required|string|between:2,100',
-                'password' => 'nullable|numeric|digits:11',
+                'password' => 'required|string|between:7,20',
                 'bvn' => 'required|string',
                 'pin' => 'required|numeric|digits:6',
             ]);
@@ -85,8 +85,8 @@ class AuthController extends Controller
             $data = User::create(array_merge(
                 $validator->validated(),
                 [
-                    'pin' =>  Hash::make($request->pin),
-                    'password' => bcrypt($request->password),
+                    'pin' =>  Hash::make($request->input('pin')),
+                    'password' => bcrypt($request->input('password')),
                 ]
             ));
 
