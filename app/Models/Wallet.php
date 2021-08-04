@@ -9,4 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 class Wallet extends Model
 {
     use HasFactory, Uuids;
+
+    protected $fillable = [
+        'virtual_account',
+        'visibility',
+        'balance',
+        'user_id'
+    ];
 }
