@@ -146,7 +146,8 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    public function userProfile() {
+    public function userProfile(): JsonResponse
+    {
         return response()->json(auth()->user());
     }
 
@@ -157,7 +158,8 @@ class AuthController extends Controller
      *
      * @return JsonResponse
      */
-    protected function createNewToken(string $token){
+    protected function createNewToken(string $token): JsonResponse
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',

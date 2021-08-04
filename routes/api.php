@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\WalletController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +42,13 @@ Route::group([
     Route::get('/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
     Route::get('/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 });
+
+//Wallet Routes
+Route::group([
+    'middleware' => ['jwt.verify', 'verified', 'pin'],
+    'prefix' => 'wallet'
+], function ($router) {
+    Route::get('/', [WalletController::class, 'show']);
+    Route::post('/withdraw', [WalletController::class, 'withdraw']);
+});
+
