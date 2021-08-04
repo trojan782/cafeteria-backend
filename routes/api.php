@@ -58,12 +58,12 @@ Route::group([
 
 Route::group([
     'middleware' => ['jwt.verify', 'verified'],
-    'prefix' => 'wallet'
+    'prefix' => 'meals'
 ], function ($router) {
     Route::get('/', [MealController::class, 'index'])->middleware('can:show-meal');
-    Route::get('/create', [MealController::class, 'create'])->middleware('can:create-meal');
-    Route::get('/update/{id}', [MealController::class, 'edit'])->middleware('can:update-meal');
-    Route::put('/purchase', [MealController::class, 'store'])->middleware('can:purchase-meal');
-    Route::put('/remove/{id}', [MealController::class, 'remove'])->middleware('can:destroy-meal');
+    Route::post('/create', [MealController::class, 'create']);
+    Route::put('/update/{id}', [MealController::class, 'edit'])->middleware('can:update-meal');
+    Route::post('/purchase', [MealController::class, 'store'])->middleware('can:purchase-meal');
+    Route::delete('/remove/{id}', [MealController::class, 'remove'])->middleware('can:destroy-meal');
     Route::post('/history', [MealController::class, 'show']);
 });
