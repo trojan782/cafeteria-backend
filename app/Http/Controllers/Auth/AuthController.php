@@ -108,6 +108,7 @@ class AuthController extends Controller
                 'balance' => 0,
                 'user_id' => $data->id,
                 'visibility' => true,
+                'reference' => $response['data']['order_ref'],
                 'virtual_account' => $response['data']['account_number'],
             ]);
             return response()->json([
