@@ -13,7 +13,8 @@ class Meal extends Model
     protected $fillable = [
         'name',
         'qty',
-        'price'
+        'price',
+        'availability'
     ];
 
     protected $hidden = [

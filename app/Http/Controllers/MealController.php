@@ -12,7 +12,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class MealController extends Controller
 {
@@ -64,9 +66,8 @@ class MealController extends Controller
             if($validator->fails()){
                 return response()->json(json_decode($validator->errors()->toJson()), 400);
             }
-            $ticket = $request->all();
             //Loop through the ticket
-            $meals = $ticket['meal'];
+            $meals = $request->all()['meal'];
             $price = array();
             foreach ($meals as $m){
                 array_push($price, $m['price']);
@@ -88,7 +89,6 @@ class MealController extends Controller
                 'items' => $meals,
                 'description' => $request->input('description')
             ]);
-            $name = auth()->user()->username;
             $qr = $qrCode
                 ->setText($history->id)
                 ->setSize(300)
@@ -123,23 +123,49 @@ class MealController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Meal $meal
-     * @return Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function edit(Meal $meal): Response
+    public function edit(Request $request): JsonResponse
     {
-        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'string',
+                'qty' => 'numeric',
+                'price' => 'numeric',
+                'availability' => 'boolean'
+            ]);
+            if($validator->fails()){
+                return response()->json(json_decode($validator->errors()->toJson()), 400);
+            }
+            $user = Meal::find($request->route('id'))->update(array_merge(
+                $validator->validated()
+            ));
+            return $this->dataResponse('Meal updated successfully', $user);
+        } catch (\Exception $e){
+            return $this->dataResponse($e->getMessage(), null, 'error');
+        }
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Meal $meal
-     * @return Response
-     */
-    public function destroy(Meal $meal): Response
+    public function remove(Request $request): JsonResponse
     {
-        //
+        try {
+            if(Gate::allows('can:destroy-meal')){
+                if(Str::isUuid($request->route('id'))){
+                    if(Meal::find($request->route('id'))){
+                        $meal = Meal::find($request->route('id'))->delete();
+                        return $this->dataResponse("Data deleted successfully", $meal);
+                    }else{
+                        throw new \Exception("Nothing to delete");
+                    }
+                }else{
+                    throw new \Exception("Invalid id supplied");
+                }
+            }else {
+                throw new \Exception("Forbidden resource");
+            }
+        } catch (\Exception $e){
+            return $this->dataResponse($e->getMessage(), null, 'error');
+        }
     }
 }
