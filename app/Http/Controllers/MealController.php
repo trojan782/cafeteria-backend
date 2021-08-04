@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Meal;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class MealController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         //
     }
@@ -20,20 +22,31 @@ class MealController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function create()
+    public function create(Request $request): Response
     {
-        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+                'qty' => 'required|numeric',
+                'price' => 'required|numeric'
+            ]);
+            if($validator->fails()){
+                return response()->json(json_decode($validator->errors()->toJson()), 400);
+            }
+        } catch (\Exception $e){
+            return $this->dataResponse($e->getMessage(), null, 'error');
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         //
     }
@@ -41,10 +54,10 @@ class MealController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Meal  $meal
-     * @return \Illuminate\Http\Response
+     * @param Meal $meal
+     * @return Response
      */
-    public function show(Meal $meal)
+    public function show(Meal $meal): Response
     {
         //
     }
@@ -52,33 +65,22 @@ class MealController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Meal  $meal
-     * @return \Illuminate\Http\Response
+     * @param Meal $meal
+     * @return Response
      */
-    public function edit(Meal $meal)
+    public function edit(Meal $meal): Response
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Meal  $meal
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Meal $meal)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Meal  $meal
-     * @return \Illuminate\Http\Response
+     * @param Meal $meal
+     * @return Response
      */
-    public function destroy(Meal $meal)
+    public function destroy(Meal $meal): Response
     {
         //
     }

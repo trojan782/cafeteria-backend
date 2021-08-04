@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Wallet;
+use GuzzleHttp\Exception\ConnectException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -85,7 +86,10 @@ class WalletController extends Controller
                 $wallet->save();
                 return $this->dataResponse('Transfer successfully initialized');
             }
-        } catch (\Exception $e){
+        } catch (ConnectException $e) {
+            return $this->dataResponse('Poor Network Connection. System unable to make transfer.', null, 'error');
+        }
+        catch (\Exception $e){
             return $this->dataResponse($e->getMessage(), null, 'error');
         }
     }

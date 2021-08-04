@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\MealController;
 use App\Http\Controllers\WalletController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -53,3 +54,16 @@ Route::group([
     Route::post('/withdraw', [WalletController::class, 'withdraw']);
 });
 
+//Meal Routes
+
+Route::group([
+    'middleware' => ['jwt.verify', 'verified'],
+    'prefix' => 'wallet'
+], function ($router) {
+    Route::get('/', [MealController::class, 'index']);
+    Route::get('/create', [MealController::class, 'create']);
+    Route::get('/update/{id}', [MealController::class, 'edit']);
+    Route::put('/purchase', [MealController::class, 'store']);
+    Route::put('/remove/{id}', [MealController::class, 'remove']);
+    Route::post('/history', [MealController::class, 'show']);
+});
