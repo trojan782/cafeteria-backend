@@ -30,6 +30,24 @@ class Controller extends BaseController
         ], $statusCode);
     }
 
+    protected static function dataResponseWithCode($message, $barcode, $data = null, $status = "success", $statusCode = null): JsonResponse
+    {
+        if (!$statusCode) {
+            if ($status == "error") {
+                $statusCode = Response::HTTP_BAD_REQUEST;
+            } else {
+                $statusCode = Response::HTTP_OK;
+            }
+        }
+
+        return new JsonResponse([
+            'status' => $status,
+            'message' => $message,
+            'barcode' => $barcode,
+            'data' => $data,
+        ], $statusCode);
+    }
+
     protected function generateRandomString($length = 10): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
