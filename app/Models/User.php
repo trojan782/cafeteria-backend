@@ -18,6 +18,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->hasOne(Wallet::class);
     }
 
+    public function history(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(FoodHistory::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

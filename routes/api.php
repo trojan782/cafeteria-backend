@@ -65,5 +65,5 @@ Route::group([
     Route::put('/update/{id}', [MealController::class, 'edit'])->middleware('can:update-meal');
     Route::post('/purchase', [MealController::class, 'store'])->middleware('can:purchase-meal');
     Route::delete('/remove/{id}', [MealController::class, 'remove'])->middleware('can:destroy-meal');
-    Route::post('/history', [MealController::class, 'show']);
+    Route::get('/history', [MealController::class, 'show']);
 });

@@ -50,7 +50,7 @@ class MealController extends Controller
         }
     }
 
-    public function store(Request $request, User $user, Wallet $wallet, QrCode $qrCode)
+    public function store(Request $request, User $user, Wallet $wallet, QrCode $qrCode): JsonResponse
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -111,15 +111,13 @@ class MealController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Meal $meal
-     * @return Response
-     */
-    public function show(Meal $meal): Response
+    public function show(Meal $meal)
     {
-        //
+        try {
+            return User::find(auth()->user()->id)->history;
+        } catch (\Exception $e){
+            return $this->dataResponse($e->getMessage(), null, 'error');
+        }
     }
 
     /**
